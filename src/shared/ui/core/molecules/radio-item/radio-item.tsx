@@ -2,16 +2,17 @@ import styled from "styled-components";
 import { RadioButton } from "../../atoms/radio-button";
 import { ComponentProps } from "react";
 import { Typography } from "../../atoms";
+import { IconInfoCircle } from "../../atoms/icons";
 
 export type TRadioItem = {
   buttonProps: ComponentProps<typeof RadioButton>
   title: string,
   message: string,
-  alarm?: string,
+  alarmText?: string,
   isAlarm?: boolean,
 }
 
-export const RadioItem = ({ title, message, isAlarm, alarm, buttonProps }: TRadioItem) => {
+export const RadioItem = ({ title, message, isAlarm, alarmText: alarm, buttonProps }: TRadioItem) => {
   return (
     <RadioItemWrapper>
       <RadioButtonWrapper>
@@ -30,6 +31,9 @@ export const RadioItem = ({ title, message, isAlarm, alarm, buttonProps }: TRadi
         </Message>
         {isAlarm &&
           <Alarm>
+            <IconInfoCircle
+              size={16}
+            />
             <Typography variant="caption1" type="medium" color="#ff3b30">
               {alarm}
             </Typography>
@@ -58,12 +62,8 @@ const Title = styled.p`
 const Message = styled.p`
 
 `
-const Alarm = styled.p`
-
+const Alarm = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
 `
-
-
-
-
-
-

@@ -15,7 +15,7 @@ export const Default: TRadioItemStory = {
   args: {
     title: 'title',
     message: 'message',
-    alarm: 'alarm',
+    alarmText: 'alarm',
     isAlarm: false,
     buttonProps: {
       disabled: false,
