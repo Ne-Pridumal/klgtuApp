@@ -3,38 +3,45 @@ import { THEME_GRID_STEP } from './constants';
 export const lightTheme = {
   name: 'default',
   palette: {
+    accent: {
+      primary_500: '#0193DE',
+      primary_550: '#007FCA',
+      primary_500_op12: '#0193DE12',
+    },
+    colourful: {
+      orange_500: '#F2994A',
+      red_500: '#EB5757',
+      blue_500: '#2F80ED',
+      green_500: '#27AE60',
+      purple_500: '#9B51E0',
+      gray_500: '#828282'
+    },
     background: {
-      primary: '#f9f9f9',
+      bg_000: '#FFFFFF',
+      bg_050: '#F9F9F9',
+      bg_100: '#ECEDEE',
+      bg_150: '#DADBDD',
+      bg_200: '#C7C8CC',
+      bg_250: '#B4B6BB'
     },
     content: {
-      primary: '#000000',
-      secondary: '#403A47',
-      tertiary: '#706D76',
-      error: '#FB6176'
+      cnt_000: '#1A1C1E',
+      cnt_050: '#72787F',
+      cnt_100: '#999EA4',
+      cnt_150: '#CED0D6',
+      cnt_200: '#F0F2F5',
+      cnt_const_white: '#FFFFFF'
     },
-    accent: {
-      primary: '#6C78E6',
-      secondary: '#F678BA',
-      tertiary: '#FFFFFF',
+    system: {
+      theme_inverse_1: '#000000',
+      theme_inverse_2: '#FFFFFF',
+      error_500: '#FF3B30',
+      shadow_layer_1: '#FFFFFF50',
     },
     text: {
       primary: '#000000',
       secondary: '#C2C1C6',
       tertiary: '#706D76',
-    },
-    indicator: {
-      error: '#FB6176',
-      done: '#4CD563',
-      success: '#6C78E6',
-    },
-    button: {
-      primary: '#6C78E6',
-      secondary: '#FFFFFF',
-    },
-    helpers: {
-      bottomMenu: '#352F3D50',
-      overlay: '#00000025',
-      celndarPeriod: '#6C78E620',
     },
   },
   typography: {

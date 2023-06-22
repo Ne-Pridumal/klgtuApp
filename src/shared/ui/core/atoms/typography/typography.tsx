@@ -18,7 +18,6 @@ export const Typography = styled.p.attrs(() => ({
 })) <TTypographyProps>`
   ${({ theme: { typography, palette }, variant = 'body', color, type = 'medium' }) => css`
     font-family: ${typography[variant].fontFamily};
-    letter-spacing: ${typography[variant].letterSpacing};
     line-height: ${typography[variant].lineHeight};
     font-size: ${typography[variant].size};
     color: ${color ?? palette.text.primary};
