@@ -1,7 +1,7 @@
 import styled, { useTheme } from "styled-components";
-import { IconPlus } from "../../atoms/icons";
 import { Typography } from "../../atoms";
 import { TypographyVariants } from "@shared/ui/theme";
+import { ReactNode } from "react";
 
 export type TButton = {
   text: string,
@@ -9,7 +9,7 @@ export type TButton = {
   type?: 'large' | 'medium' | 'small',
   variant?: 'filled' | 'outlined' | 'text',
   state?: 'disabled' | 'enabled',
-  icon?: 'plus',
+  icon?: ReactNode,
 }
 
 
@@ -30,7 +30,7 @@ export const Button = ({
       state={state}
       variant={variant}
     >
-      {icon && icons[icon]}
+      {icon}
       <Typography
         type='medium'
         variant={textType[type]}
@@ -41,10 +41,6 @@ export const Button = ({
     </ButtonWrapper>
   );
 };
-
-const icons = {
-  plus: <IconPlus size={20} />
-}
 
 const textType: {
   large: TypographyVariants,
@@ -58,7 +54,7 @@ const textType: {
 
 type TButtonWrapper = Required<Pick<TButton, 'state' | 'variant'>>
 
-//TODO: add theme support
+//TODO: change box-shadow color 
 const ButtonWrapper = styled.button<TButtonWrapper>`
   display: flex;
   justify-content: center;
@@ -79,22 +75,16 @@ const ButtonWrapper = styled.button<TButtonWrapper>`
     'none'
   };
   cursor: pointer;
-  &:active: {
-    box-shadow: ${({ theme: { palette } }) => `0px 0px 0px 2px ${palette.accent.primary_550}`};
-  };
+  &:active {
+    box-shadow: ${({ theme: { palette }, state }) => state === 'enabled' && `0px 0px 0px 2px ${palette.accent.primary_500_op12}`};
+  }
   &:hover {
-  background: ${({ theme: { palette }, state, variant }): string => {
+    background: ${({ theme: { palette }, state, variant }): string => {
     let color = state === 'disabled' ? palette.content.cnt_050 : palette.accent.primary_550
     if (variant === 'outlined' || variant === 'text') {
       color = 'transparent'
     }
     return color
   }};
-  };
-    border: ${({ theme: { palette }, variant, state }) => variant === 'outlined' ?
-    state === 'disabled' ? `1px solid ${palette.content.cnt_050}` : `1px solid ${palette.accent.primary_550}`
-    :
-    'none'
-  };
-  };
+  }
 `
