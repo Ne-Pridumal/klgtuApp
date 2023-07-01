@@ -30,7 +30,8 @@ export const lightTheme = {
       cnt_100: '#999EA4',
       cnt_150: '#CED0D6',
       cnt_200: '#F0F2F5',
-      cnt_const_white: '#FFFFFF'
+      cnt_const_white: '#FFFFFF',
+      cnt_const_black: '#000000'
     },
     system: {
       theme_inverse_1: '#000000',

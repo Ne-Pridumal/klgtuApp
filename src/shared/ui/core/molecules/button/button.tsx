@@ -8,83 +8,89 @@ export type TButton = {
   onClick?: () => void,
   type?: 'large' | 'medium' | 'small',
   variant?: 'filled' | 'outlined' | 'text',
-  state?: 'disabled' | 'enabled',
+  isDisable?: boolean,
   icon?: ReactNode,
 }
 
 
 export const Button = ({
   text,
-  state = 'enabled',
+  isDisable = false,
   variant = 'filled',
   type = 'medium',
   icon,
   onClick
 }: TButton) => {
   const { palette } = useTheme()
-  const textColor = variant === 'filled' ? palette.content.cnt_const_white :
-    state === 'disabled' ? palette.content.cnt_050 : palette.accent.primary_500
+  const textColor: Record<typeof variant, string> = {
+    text: palette.accent.primary_500,
+    filled: palette.content.cnt_const_white,
+    outlined: palette.accent.primary_500,
+  }
+  const textType: Record<typeof type, TypographyVariants> = {
+    large: 'subheadline',
+    medium: 'footnote',
+    small: 'caption2',
+  }
   return (
     <ButtonWrapper
       onClick={onClick}
-      state={state}
+      isDisable={isDisable}
       variant={variant}
+      disabled={isDisable}
     >
       {icon}
-      <Typography
+      <Text
         type='medium'
         variant={textType[type]}
-        color={textColor}
+        color={isDisable ? palette.content.cnt_050 : textColor[variant]}
       >
         {text}
-      </Typography>
+      </Text>
     </ButtonWrapper>
   );
 };
 
-const textType: {
-  large: TypographyVariants,
-  medium: TypographyVariants,
-  small: TypographyVariants
-} = {
-  large: 'subheadline',
-  medium: 'footnote',
-  small: 'caption2',
-}
 
-type TButtonWrapper = Required<Pick<TButton, 'state' | 'variant'>>
+type TButtonWrapper = Required<Pick<TButton, 'isDisable' | 'variant'>>
 
-//TODO: change box-shadow color 
 const ButtonWrapper = styled.button<TButtonWrapper>`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: ${({ variant }) => variant !== 'text' ? `10px 16px` : `0px`};
   border-radius: 6px;
-  background: ${({ theme: { palette }, state, variant }): string => {
-    let color = state === 'disabled' ? palette.content.cnt_050 : palette.accent.primary_500
+  background: ${({ theme: { palette }, isDisable, variant }): string => {
+    let color = isDisable ? palette.background.bg_150 : palette.accent.primary_500
     if (variant === 'outlined' || variant === 'text') {
       color = 'transparent'
     }
     return color
   }};
-  border: ${({ theme: { palette }, variant, state }) => variant === 'outlined' ?
-    state === 'disabled' ? `1px solid ${palette.content.cnt_050}` : `1px solid ${palette.accent.primary_500}`
+  border: ${({ theme: { palette }, variant, isDisable }) => variant === 'outlined' ?
+    isDisable ? `1px solid ${palette.background.bg_150}` : `1px solid ${palette.accent.primary_500}`
     :
     'none'
   };
   cursor: pointer;
   &:active {
-    box-shadow: ${({ theme: { palette }, state }) => state === 'enabled' && `0px 0px 0px 2px ${palette.accent.primary_500_op12}`};
+    box-shadow: ${({ theme: { palette }, isDisable, variant }) => !isDisable && variant !== 'text' && `0px 0px 0px 2px ${palette.accent.primary_500_op12}`};
   }
   &:hover {
-    background: ${({ theme: { palette }, state, variant }): string => {
-    let color = state === 'disabled' ? palette.content.cnt_050 : palette.accent.primary_550
+    background: ${({ theme: { palette }, isDisable, variant }): string => {
+    let color = isDisable ? palette.content.cnt_050 : palette.accent.primary_550
     if (variant === 'outlined' || variant === 'text') {
       color = 'transparent'
     }
     return color
   }};
+  }
+`
+
+
+// TODO: add color variation
+const Text = styled(Typography)`
+  ${ButtonWrapper}:active & {
   }
 `
