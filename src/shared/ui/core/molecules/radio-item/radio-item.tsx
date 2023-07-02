@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import { RadioButton } from "../../atoms/radio-button";
 import { ComponentProps } from "react";
-import { Typography } from "../../atoms";
-import { IconInfoCircle } from "../../atoms/icons";
+import { IconInfoCircle, RadioButton, Typography } from "../../atoms";
 
 export type TRadioItem = {
   buttonProps: ComponentProps<typeof RadioButton>

@@ -3,49 +3,100 @@ import styled from "styled-components";
 
 export type TIconButton = {
   onClick?: () => void,
-  variant?: 'filled' | 'transparent',
-  state?: 'disabled' | 'enabled',
+  variant?: 'filled' | 'transparent' | 'tonal',
+  form?: 'ellipse' | 'square',
+  isDisable?: boolean,
   icon?: ReactNode,
 }
 
 export const IconButton = ({
   onClick,
   icon,
-  state = 'enabled',
-  variant = 'filled'
+  isDisable = false,
+  variant = 'filled',
+  form = 'ellipse',
 }: TIconButton) => {
   return (
     <ButtonWrapper
       onClick={onClick}
-      state={state}
+      isDisable={isDisable}
       variant={variant}
+      form={form}
+      disabled={isDisable}
     >
       {icon}
     </ButtonWrapper>
   );
 };
 
-type TButtonWrapper = Required<Pick<TIconButton, 'variant' | 'state'>>
+type TButtonWrapper = Required<Pick<TIconButton, 'variant' | 'isDisable' | 'form'>>
 
 const ButtonWrapper = styled.button<TButtonWrapper>`
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 8px;
-  border-radius: 50%;
+  border-radius: ${({ form }) => form === 'square' ? `8px` : `50%`};
   border: none;
   cursor: pointer;
-  background: ${({ theme: { palette }, variant, state }) => variant === 'transparent' ?
-    'transparent'
-    :
-    state === 'disabled' ? palette.background.bg_150 : palette.accent.primary_500
-  };
+  background: ${({ theme: { palette }, variant, isDisable }) => {
+    let bg = palette.accent.primary_500;
+    if (variant === 'tonal') {
+      bg = palette.accent.primary_500_op12
+    }
+    if (isDisable) {
+      bg = palette.background.bg_150
+    }
+    if (variant === 'transparent') {
+      bg = 'transparent'
+    }
+    return bg
+  }};
   &:hover {
-    background: ${({ theme: { palette }, variant, state }) => variant === 'transparent' ?
-    'transparent'
-    :
-    state === 'disabled' ? palette.background.bg_150 : palette.accent.primary_550
+    background: ${({ theme: { palette }, variant, isDisable }) => {
+    let bg = palette.accent.primary_550;
+    if (variant === 'tonal') {
+      bg = palette.accent.primary_500_op12
+    }
+    if (isDisable) {
+      bg = palette.background.bg_150
+    }
+    if (variant === 'transparent') {
+      bg = 'transparent'
+    }
+    return bg
+
+  }};
   };
+  & svg path {
+    fill: ${({ theme: { palette }, isDisable, variant }) => {
+    let bg = palette.content.cnt_000
+    if (variant === 'filled') {
+      bg = palette.content.cnt_const_white
+    }
+    else if (variant === 'tonal') {
+      bg = palette.accent.primary_500
+    }
+    if (isDisable) {
+      if (variant === 'transparent') {
+        bg = palette.content.cnt_100
+      }
+      if (variant === 'filled') {
+        bg = palette.content.cnt_050
+      }
+      if (variant === 'tonal') {
+        bg = palette.content.cnt_150
+      }
+    }
+    return bg
+  }}
+  };
+  &:active svg path {
+    fill: ${({ theme: { palette }, variant }) => {
+    if (variant === 'transparent') {
+      return palette.accent.primary_500
+    }
+    return ''
+  }}
   }
 `
-

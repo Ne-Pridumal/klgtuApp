@@ -9,15 +9,16 @@ export type THeader = {
   onDownload: () => void,
   onSwitchTheme: () => void,
   onChoiceTimetable?: () => void,
+  logoAction?: () => void,
   actionComponent?: ReactNode
 }
 
-export const Header = ({ actionComponent, onChoiceTimetable, onSwitchTheme, onDownload, type }: THeader) => {
+export const Header = ({ logoAction, actionComponent, onChoiceTimetable, onSwitchTheme, onDownload, type }: THeader) => {
   const { palette } = useTheme()
   return (
     <Wrapper>
       {type === 'logo' ?
-        <LogoWrapper>
+        <LogoWrapper onClick={logoAction}>
           <IconKLGTUApp
             height={32}
             width={141}
@@ -45,7 +46,9 @@ export const Header = ({ actionComponent, onChoiceTimetable, onSwitchTheme, onDo
         <IconButton
           onClick={onSwitchTheme}
           variant="transparent"
-          icon={<IconSun />}
+          icon={<IconSun
+          />}
+          form="ellipse"
         />
         <Button
           text="Скачать приложение"
@@ -71,12 +74,13 @@ const Wrapper = styled.header`
 `
 const LogoWrapper = styled.div`
   display: flex;
+  cursor: pointer;
 `
 const ContentWrapper = styled.div`
 
 `
 const ActivitiesWrapper = styled.div`
   display: flex;
-  algin-items: center;
+  align-items: center;
   gap: 16px;
 `

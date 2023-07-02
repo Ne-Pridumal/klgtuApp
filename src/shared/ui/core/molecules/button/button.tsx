@@ -1,4 +1,4 @@
-import styled, { useTheme } from "styled-components";
+import styled, { DefaultTheme } from "styled-components";
 import { Typography } from "../../atoms";
 import { TypographyVariants } from "@shared/ui/theme";
 import { ReactNode } from "react";
@@ -21,12 +21,6 @@ export const Button = ({
   icon,
   onClick
 }: TButton) => {
-  const { palette } = useTheme()
-  const textColor: Record<typeof variant, string> = {
-    text: palette.accent.primary_500,
-    filled: palette.content.cnt_const_white,
-    outlined: palette.accent.primary_500,
-  }
   const textType: Record<typeof type, TypographyVariants> = {
     large: 'subheadline',
     medium: 'footnote',
@@ -40,13 +34,12 @@ export const Button = ({
       disabled={isDisable}
     >
       {icon}
-      <Text
+      <Typography
         type='medium'
         variant={textType[type]}
-        color={isDisable ? palette.content.cnt_050 : textColor[variant]}
       >
         {text}
-      </Text>
+      </Typography>
     </ButtonWrapper>
   );
 };
@@ -76,7 +69,7 @@ const ButtonWrapper = styled.button<TButtonWrapper>`
   cursor: pointer;
   &:active {
     box-shadow: ${({ theme: { palette }, isDisable, variant }) => !isDisable && variant !== 'text' && `0px 0px 0px 2px ${palette.accent.primary_500_op12}`};
-  }
+  };
   &:hover {
     background: ${({ theme: { palette }, isDisable, variant }): string => {
     let color = isDisable ? palette.content.cnt_050 : palette.accent.primary_550
@@ -85,12 +78,49 @@ const ButtonWrapper = styled.button<TButtonWrapper>`
     }
     return color
   }};
-  }
+  };
+  & ${Typography} {
+  color: ${({ theme, isDisable, variant }) => setColor(theme, { isDisable, variant })};
+  };
+  &:hover ${Typography} {
+    color: ${({ theme: { palette }, isDisable, variant }) => {
+    let cl = palette.accent.primary_550
+    if (variant === 'filled') {
+      cl = palette.content.cnt_const_white
+    }
+    if (isDisable) {
+      cl = palette.content.cnt_050
+    }
+    return cl
+  }};
+  };
+  &:active ${Typography}{
+    color: ${({ theme, isDisable, variant }) => setColor(theme, { isDisable, variant })}
+  };
+  & svg path {
+    fill: ${({ theme, isDisable, variant }) => setColor(theme, { isDisable, variant })}
+  };
+  &:hover svg path {
+    fill: ${({ theme: { palette }, isDisable, variant }) => {
+    let cl = palette.accent.primary_550
+    if (variant === 'filled') {
+      cl = palette.content.cnt_const_white
+    }
+    if (isDisable) {
+      cl = palette.content.cnt_050
+    }
+    return cl
+  }}
+  };
 `
 
-
-// TODO: add color variation
-const Text = styled(Typography)`
-  ${ButtonWrapper}:active & {
+const setColor = ({ palette }: DefaultTheme, { variant, isDisable }: Required<Pick<TButton, 'variant' | 'isDisable'>>): string => {
+  let cl = palette.accent.primary_500;
+  if (variant === 'filled') {
+    cl = palette.content.cnt_const_white
   }
-`
+  if (isDisable) {
+    cl = palette.content.cnt_050
+  }
+  return cl
+}

@@ -7,6 +7,7 @@ export const lightTheme = {
       primary_500: '#0193DE',
       primary_550: '#007FCA',
       primary_500_op12: '#0193DE12',
+      primary_550_op12: '#007fca'
     },
     colourful: {
       orange_500: '#F2994A',
@@ -36,7 +37,10 @@ export const lightTheme = {
     system: {
       theme_inverse_1: '#000000',
       theme_inverse_2: '#FFFFFF',
+      success_500: '#34C759',
+      success_500_op12: '#34C759',
       error_500: '#FF3B30',
+      error_500_op12: '#FF3B30',
       shadow_layer_1: '#FFFFFF50',
     },
     text: {
@@ -58,7 +62,7 @@ export const lightTheme = {
     },
     title2: {
       size: '22px',
-      lineHeight: '120%',
+      lineHeight: '125%',
       fontFamily: 'Inter',
     },
     title3: {
@@ -68,27 +72,27 @@ export const lightTheme = {
     },
     body: {
       size: '17px',
-      lineHeight: '120%',
+      lineHeight: '140%',
       fontFamily: 'Inter',
     },
     callout: {
       size: '16px',
-      lineHeight: '120%',
+      lineHeight: '133%',
       fontFamily: 'Inter',
     },
     subheadline: {
       size: '15px',
-      lineHeight: '120%',
+      lineHeight: '133%',
       fontFamily: 'Inter',
     },
     footnote: {
       size: '13px',
-      lineHeight: '120%',
+      lineHeight: '135%',
       fontFamily: 'Inter',
     },
     caption1: {
       size: '12px',
-      lineHeight: '120%',
+      lineHeight: '133%',
       fontFamily: 'Inter',
     },
     caption2: {

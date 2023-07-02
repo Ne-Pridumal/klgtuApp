@@ -1,18 +1,20 @@
 import styled from "styled-components";
-import { Typography } from "../../atoms";
-import { IconInfoCircle, IconXClose } from "../../atoms/icons";
+import { IconInfoCircle, IconXClose, Typography } from "../../atoms";
+import { IconButton } from "../icon-button";
+import { keyframes } from "styled-components";
 
 export type TNotificationItem = {
   isPicked?: boolean,
+  autoCloseTime?: number,
   text: string,
   onClose: () => void
 }
 
-export const NotificationItem = ({ text, isPicked }: TNotificationItem) => {
+export const NotificationItem = ({ text, isPicked, onClose, autoCloseTime = 10 }: TNotificationItem) => {
   return (
     <Wrapper>
       {isPicked &&
-        <Redline />
+        <Redline timer={autoCloseTime} />
       }
       <IconInfoCircle
       />
@@ -20,7 +22,13 @@ export const NotificationItem = ({ text, isPicked }: TNotificationItem) => {
         {text}
       </Typography>
       <XCloseWrapper>
-        <IconXClose
+        <IconButton
+          icon={
+            <IconXClose
+            />
+          }
+          variant="transparent"
+          onClick={onClose}
         />
       </XCloseWrapper>
     </Wrapper>
@@ -36,20 +44,32 @@ const Wrapper = styled.div`
   align-items: center;
   gap: 12px;
   border-radius: 20px;
-  box-shadow: ${({ theme: { palette } }) => `0px 5px 16px 0px rgba(0,0,0, .1)`};
+  box-shadow: 0px 5px 16px 0px rgba(0,0,0, .1);
 `
 const XCloseWrapper = styled.div`
   display: flex;
-  justify-self: flex-end;
   margin-left: auto;
 `
-const Redline = styled.div`
+
+type TRedline = {
+  timer: number
+}
+const vanishing = keyframes`
+  from {
+    width: calc(100% - 48px)
+  }
+  to {
+    width: 0;
+  }
+`
+const Redline = styled.div<TRedline>`
+  margin-right: auto;
   position: absolute;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 48px);
-  height: 0px;
-  border: 2px solid ${({ theme: { palette } }) => palette.system.error_500};
+  left: 24px;
+  height: 4px;
+  background: ${({ theme: { palette } }) => palette.system.error_500};
   border-radius: 0px 0px 2px 2px;
+  animation: ${vanishing} ${({ timer }) => `${timer}s`} linear;
 `
+

@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { Button } from '.'
+import { IconPlus } from '../../atoms/icons'
 
 const meta: Meta<typeof Button> = {
   title: '',
@@ -12,5 +13,8 @@ type TButtonStory = StoryObj<typeof Button>
 
 export const Default: TButtonStory = {
   render: args => <Button {...args} />,
-  args: {},
+  args: {
+    icon: <IconPlus />,
+    text: 'Text'
+  },
 }
