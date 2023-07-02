@@ -1,6 +1,6 @@
 import styled, { useTheme } from "styled-components";
-import { IconSearch } from "../../atoms/icons";
 import { ChangeEvent, useRef, useState } from "react";
+import { IconSearch } from "../../atoms";
 
 export type TTextInput = {
   value?: string,
