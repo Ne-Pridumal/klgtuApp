@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import styled, { useTheme } from "styled-components";
-import { IconChevron, IconKLGTUApp, IconSun } from "../../atoms/icons";
+import styled from "styled-components";
+import { IconKLGTUApp } from "../../atoms/icons";
 import { Button } from "../../molecules/button";
 import { IconButton } from "../../molecules/icon-button";
 
@@ -14,7 +14,6 @@ export type THeader = {
 }
 
 export const Header = ({ logoAction, actionComponent, onChoiceTimetable, onSwitchTheme, onDownload, type }: THeader) => {
-  const { palette } = useTheme()
   return (
     <Wrapper>
       {type === 'logo' ?
@@ -29,12 +28,8 @@ export const Header = ({ logoAction, actionComponent, onChoiceTimetable, onSwitc
           text="Выбор расписания"
           variant="text"
           onClick={onChoiceTimetable}
-          type="large"
-          icon={<IconChevron
-            size={16}
-            color={palette.accent.primary_500}
-            direction="left"
-          />}
+          size="large"
+          icon={'chevronLeft'}
         />
       }
       {actionComponent &&
@@ -46,13 +41,12 @@ export const Header = ({ logoAction, actionComponent, onChoiceTimetable, onSwitc
         <IconButton
           onClick={onSwitchTheme}
           variant="transparent"
-          icon={<IconSun
-          />}
+          icon={'sun'}
           form="ellipse"
         />
         <Button
           text="Скачать приложение"
-          type="medium"
+          size="medium"
           variant="outlined"
           onClick={onDownload}
         />

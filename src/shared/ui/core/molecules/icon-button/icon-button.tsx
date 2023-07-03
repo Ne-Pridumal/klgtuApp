@@ -1,12 +1,14 @@
-import { ReactNode } from "react";
 import styled from "styled-components";
+import { IconsList, TIconsList } from "../../atoms";
 
 export type TIconButton = {
   onClick?: () => void,
   variant?: 'filled' | 'transparent' | 'tonal',
   form?: 'ellipse' | 'square',
   isDisable?: boolean,
-  icon?: ReactNode,
+  icon: TIconsList,
+  width?: number,
+  height?: number,
 }
 
 export const IconButton = ({
@@ -15,6 +17,8 @@ export const IconButton = ({
   isDisable = false,
   variant = 'filled',
   form = 'ellipse',
+  width = 24,
+  height = 24,
 }: TIconButton) => {
   return (
     <ButtonWrapper
@@ -23,13 +27,15 @@ export const IconButton = ({
       variant={variant}
       form={form}
       disabled={isDisable}
+      height={height}
+      width={width}
     >
-      {icon}
+      {IconsList[icon]}
     </ButtonWrapper>
   );
 };
 
-type TButtonWrapper = Required<Pick<TIconButton, 'variant' | 'isDisable' | 'form'>>
+type TButtonWrapper = Required<Pick<TIconButton, 'variant' | 'isDisable' | 'form' | 'width' | 'height'>>
 
 const ButtonWrapper = styled.button<TButtonWrapper>`
   display: flex;
@@ -45,7 +51,12 @@ const ButtonWrapper = styled.button<TButtonWrapper>`
       bg = palette.accent.primary_500_op12
     }
     if (isDisable) {
-      bg = palette.background.bg_150
+      if (variant === 'tonal') {
+        bg = palette.background.bg_050
+      }
+      else {
+        bg = palette.background.bg_150
+      }
     }
     if (variant === 'transparent') {
       bg = 'transparent'
@@ -54,19 +65,15 @@ const ButtonWrapper = styled.button<TButtonWrapper>`
   }};
   &:hover {
     background: ${({ theme: { palette }, variant, isDisable }) => {
-    let bg = palette.accent.primary_550;
-    if (variant === 'tonal') {
-      bg = palette.accent.primary_500_op12
+    if (variant === 'filled' && !isDisable) {
+      return palette.accent.primary_550
     }
-    if (isDisable) {
-      bg = palette.background.bg_150
-    }
-    if (variant === 'transparent') {
-      bg = 'transparent'
-    }
-    return bg
-
+    return ''
   }};
+  };
+  & svg {
+    width: ${({ width }) => `${width}px`};
+    height: ${({ height }) => `${height}px`};
   };
   & svg path {
     fill: ${({ theme: { palette }, isDisable, variant }) => {

@@ -105,7 +105,7 @@ const Wrapper = styled.div<TWrapper>`
 `
 const TitleWrapper = styled.div`
   width: 100%;
-  padding: 16px 8px;
+  padding: 16px 16px 8px 16px;
   & ${Typography} {
     text-transform: uppercase;
   }
