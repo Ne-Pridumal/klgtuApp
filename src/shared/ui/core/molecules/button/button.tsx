@@ -1,27 +1,25 @@
 import styled, { DefaultTheme } from "styled-components";
-import { Typography } from "../../atoms";
+import { Typography, TIconsList, IconsList } from "../../atoms";
 import { TypographyVariants } from "@shared/ui/theme";
-import { ReactNode } from "react";
 
 export type TButton = {
   text: string,
   onClick?: () => void,
-  type?: 'large' | 'medium' | 'small',
+  size?: 'large' | 'medium' | 'small',
   variant?: 'filled' | 'outlined' | 'text',
   isDisable?: boolean,
-  icon?: ReactNode,
+  icon?: TIconsList,
 }
-
 
 export const Button = ({
   text,
   isDisable = false,
   variant = 'filled',
-  type = 'medium',
+  size = 'medium',
   icon,
   onClick
 }: TButton) => {
-  const textType: Record<typeof type, TypographyVariants> = {
+  const textSize: Record<typeof size, TypographyVariants> = {
     large: 'subheadline',
     medium: 'footnote',
     small: 'caption2',
@@ -32,11 +30,12 @@ export const Button = ({
       isDisable={isDisable}
       variant={variant}
       disabled={isDisable}
+      size={size}
     >
-      {icon}
+      {icon && IconsList[icon]}
       <Typography
         type='medium'
-        variant={textType[type]}
+        variant={textSize[size]}
       >
         {text}
       </Typography>
@@ -44,15 +43,23 @@ export const Button = ({
   );
 };
 
-
-type TButtonWrapper = Required<Pick<TButton, 'isDisable' | 'variant'>>
+type TButtonWrapper = Required<Pick<TButton, 'isDisable' | 'variant' | 'size'>>
 
 const ButtonWrapper = styled.button<TButtonWrapper>`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  padding: ${({ variant }) => variant !== 'text' ? `10px 16px` : `0px`};
+  padding: ${({ size }) => {
+    switch (size) {
+      case 'small':
+        return '6px 10px'
+      case 'medium':
+        return '9px 14px'
+      case 'large':
+        return '10px 16px'
+    }
+  }};
   border-radius: 6px;
   background: ${({ theme: { palette }, isDisable, variant }): string => {
     let color = isDisable ? palette.background.bg_150 : palette.accent.primary_500
@@ -71,12 +78,11 @@ const ButtonWrapper = styled.button<TButtonWrapper>`
     box-shadow: ${({ theme: { palette }, isDisable, variant }) => !isDisable && variant !== 'text' && `0px 0px 0px 2px ${palette.accent.primary_500_op12}`};
   };
   &:hover {
-    background: ${({ theme: { palette }, isDisable, variant }): string => {
-    let color = isDisable ? palette.content.cnt_050 : palette.accent.primary_550
-    if (variant === 'outlined' || variant === 'text') {
-      color = 'transparent'
+    background: ${({ theme: { palette }, isDisable, variant }) => {
+    if (variant === 'filled' && !isDisable) {
+      return palette.accent.primary_550
     }
-    return color
+    return ''
   }};
   };
   & ${Typography} {
@@ -97,6 +103,10 @@ const ButtonWrapper = styled.button<TButtonWrapper>`
   &:active ${Typography}{
     color: ${({ theme, isDisable, variant }) => setColor(theme, { isDisable, variant })}
   };
+  & svg {
+    width: ${({ size }) => pxBySize({ size })};
+    height: ${({ size }) => pxBySize({ size })};
+  }
   & svg path {
     fill: ${({ theme, isDisable, variant }) => setColor(theme, { isDisable, variant })}
   };
@@ -123,4 +133,19 @@ const setColor = ({ palette }: DefaultTheme, { variant, isDisable }: Required<Pi
     cl = palette.content.cnt_050
   }
   return cl
+}
+const pxBySize = ({ size }: Required<Pick<TButton, 'size'>>): string => {
+  let s = 0
+  switch (size) {
+    case 'small':
+      s = 12
+      break
+    case 'medium':
+      s = 14
+      break
+    case 'large':
+      s = 16
+      break
+  }
+  return `${s}px`
 }
