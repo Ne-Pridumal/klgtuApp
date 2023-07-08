@@ -9,6 +9,7 @@ export type TIconButton = {
   icon: TIconsList,
   width?: number,
   height?: number,
+  padding?: boolean,
 }
 
 export const IconButton = ({
@@ -19,6 +20,7 @@ export const IconButton = ({
   form = 'ellipse',
   width = 24,
   height = 24,
+  padding = true,
 }: TIconButton) => {
   return (
     <ButtonWrapper
@@ -29,19 +31,20 @@ export const IconButton = ({
       disabled={isDisable}
       height={height}
       width={width}
+      padding={padding}
     >
       {IconsList[icon]}
     </ButtonWrapper>
   );
 };
 
-type TButtonWrapper = Required<Pick<TIconButton, 'variant' | 'isDisable' | 'form' | 'width' | 'height'>>
+type TButtonWrapper = Required<Pick<TIconButton, 'variant' | 'isDisable' | 'form' | 'width' | 'height' | 'padding'>>
 
 const ButtonWrapper = styled.button<TButtonWrapper>`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: ${({ padding }) => !padding ? `0px` : `8px`};
   border-radius: ${({ form }) => form === 'square' ? `8px` : `50%`};
   border: none;
   cursor: pointer;

@@ -1,61 +1,26 @@
-import { ReactNode } from "react";
+import { ReactNode, forwardRef } from "react";
 import styled from "styled-components";
-import { IconKLGTUApp } from "../../atoms/icons";
-import { Button } from "../../molecules/button";
-import { IconButton } from "../../molecules/icon-button";
 
-export type THeader = {
-  type: "logo" | "timetable",
-  onDownload: () => void,
-  onSwitchTheme: () => void,
-  onChoiceTimetable?: () => void,
-  logoAction?: () => void,
-  actionComponent?: ReactNode
+type THeader = {
+  children: ReactNode
 }
 
-export const Header = ({ logoAction, actionComponent, onChoiceTimetable, onSwitchTheme, onDownload, type }: THeader) => {
-  return (
-    <Wrapper>
-      {type === 'logo' ?
-        <LogoWrapper onClick={logoAction}>
-          <IconKLGTUApp
-            height={32}
-            width={141}
-          />
-        </LogoWrapper>
-        :
-        <Button
-          text="Выбор расписания"
-          variant="text"
-          onClick={onChoiceTimetable}
-          size="large"
-          icon={'chevronLeft'}
-        />
-      }
-      {actionComponent &&
-        <ContentWrapper>
-          {actionComponent}
-        </ContentWrapper>
-      }
-      <ActivitiesWrapper>
-        <IconButton
-          onClick={onSwitchTheme}
-          variant="transparent"
-          icon={'sun'}
-          form="ellipse"
-        />
-        <Button
-          text="Скачать приложение"
-          size="medium"
-          variant="outlined"
-          onClick={onDownload}
-        />
-      </ActivitiesWrapper>
-    </Wrapper>
-  );
-};
+const Header = forwardRef<HTMLDivElement, THeader>((
+  {
+    children,
+    ...props
+  }: THeader,
+  ref
+) => {
 
-const Wrapper = styled.header`
+  return (
+    <HeaderWrapper {...props} ref={ref}>
+      {children}
+    </HeaderWrapper>
+  );
+});
+
+const HeaderWrapper = styled.header`
   width: 100%;
   height: 64px;
   padding: 0px 32px;
@@ -66,15 +31,5 @@ const Wrapper = styled.header`
   background: ${({ theme: { palette } }) => palette.background.bg_000};
   box-shadow: 0px 5px 16px 0px rgba(0,0,0, .1);
 `
-const LogoWrapper = styled.div`
-  display: flex;
-  cursor: pointer;
-`
-const ContentWrapper = styled.div`
 
-`
-const ActivitiesWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-`
+export default Header
