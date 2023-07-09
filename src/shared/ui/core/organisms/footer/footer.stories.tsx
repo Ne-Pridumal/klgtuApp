@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import styled, { useTheme } from 'styled-components';
 import Footer from '.';
 import { IconKLGTUApp, IconSlantedArrow, Typography } from '../../atoms';
+import { IconButton } from '../../molecules';
 
 
 type TFooterComponent = {
@@ -33,6 +34,10 @@ const FooterComponent = ({ }: TFooterComponent) => {
               size={20}
             />
           </TextWrapper>
+          <IconButton
+            icon='straightArrowUp'
+            variant='filled'
+          />
         </ActivitiesWrapper>
       </Footer.Activities>
     </Footer>

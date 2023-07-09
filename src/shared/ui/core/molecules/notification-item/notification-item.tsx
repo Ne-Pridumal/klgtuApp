@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { IconInfoCircle, IconXClose, Typography } from "../../atoms";
+import { IconInfoCircle, Typography } from "../../atoms";
 import { IconButton } from "../icon-button";
 import { keyframes } from "styled-components";
+import { forwardRef } from "react";
 
 export type TNotificationItem = {
   isPicked?: boolean,
@@ -10,9 +11,15 @@ export type TNotificationItem = {
   onClose: () => void
 }
 
-export const NotificationItem = ({ text, isPicked, onClose, autoCloseTime = 10 }: TNotificationItem) => {
+export const NotificationItem = forwardRef<HTMLDivElement, TNotificationItem>(({
+  text,
+  isPicked,
+  onClose,
+  autoCloseTime = 10,
+  ...props
+}, ref) => {
   return (
-    <Wrapper>
+    <Wrapper ref={ref} {...props}>
       {isPicked &&
         <Redline timer={autoCloseTime} />
       }
@@ -23,17 +30,14 @@ export const NotificationItem = ({ text, isPicked, onClose, autoCloseTime = 10 }
       </Typography>
       <XCloseWrapper>
         <IconButton
-          icon={
-            <IconXClose
-            />
-          }
+          icon='xClose'
           variant="transparent"
           onClick={onClose}
         />
       </XCloseWrapper>
     </Wrapper>
   );
-};
+});
 
 
 const Wrapper = styled.div`

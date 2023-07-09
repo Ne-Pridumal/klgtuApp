@@ -1,6 +1,7 @@
 import styled, { DefaultTheme } from "styled-components";
 import { Typography, TIconsList, IconsList } from "../../atoms";
 import { TypographyVariants } from "@shared/ui/theme";
+import { forwardRef } from "react";
 
 export type TButton = {
   text: string,
@@ -11,14 +12,15 @@ export type TButton = {
   icon?: TIconsList,
 }
 
-export const Button = ({
+export const Button = forwardRef<HTMLButtonElement, TButton>(({
   text,
   isDisable = false,
   variant = 'filled',
   size = 'medium',
   icon,
-  onClick
-}: TButton) => {
+  onClick,
+  ...props
+}, ref) => {
   const textSize: Record<typeof size, TypographyVariants> = {
     large: 'subheadline',
     medium: 'footnote',
@@ -31,6 +33,8 @@ export const Button = ({
       variant={variant}
       disabled={isDisable}
       size={size}
+      ref={ref}
+      {...props}
     >
       {icon && IconsList[icon]}
       <Typography
@@ -41,7 +45,7 @@ export const Button = ({
       </Typography>
     </ButtonWrapper>
   );
-};
+});
 
 type TButtonWrapper = Required<Pick<TButton, 'isDisable' | 'variant' | 'size'>>
 

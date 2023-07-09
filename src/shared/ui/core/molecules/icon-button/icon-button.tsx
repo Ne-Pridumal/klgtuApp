@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { IconsList, TIconsList } from "../../atoms";
+import { forwardRef } from "react";
 
 export type TIconButton = {
   onClick?: () => void,
@@ -12,7 +13,7 @@ export type TIconButton = {
   padding?: boolean,
 }
 
-export const IconButton = ({
+export const IconButton = forwardRef<HTMLButtonElement, TIconButton>(({
   onClick,
   icon,
   isDisable = false,
@@ -21,7 +22,8 @@ export const IconButton = ({
   width = 24,
   height = 24,
   padding = true,
-}: TIconButton) => {
+  ...props
+}, ref) => {
   return (
     <ButtonWrapper
       onClick={onClick}
@@ -32,11 +34,13 @@ export const IconButton = ({
       height={height}
       width={width}
       padding={padding}
+      ref={ref}
+      {...props}
     >
       {IconsList[icon]}
     </ButtonWrapper>
   );
-};
+});
 
 type TButtonWrapper = Required<Pick<TIconButton, 'variant' | 'isDisable' | 'form' | 'width' | 'height' | 'padding'>>
 
