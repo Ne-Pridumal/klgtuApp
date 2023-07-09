@@ -29,10 +29,10 @@ type TCollapse = {
 }
 
 const Collapse = styled.div<TCollapse>`
+  display: grid;
+  grid-template-rows: ${({ active }) => active ? '1fr' : '0fr'};
   width: 100%;
-  height: auto;
   overflow: hidden;
-  max-height: ${({ active }) => active ? 'none' : '0px'};
-  transition: max-height 0.2s ease-out;
+  transition: grid-template-rows 0.2s ease-out;
 `
 export default AccordionCollapse

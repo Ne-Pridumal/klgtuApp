@@ -25,7 +25,7 @@ const AccordionBody = forwardRef<HTMLDivElement, TAccordionBody>(({
 })
 
 const Wrapper = styled.div`
-
+  min-height: 0;
 `
 
 export default AccordionBody

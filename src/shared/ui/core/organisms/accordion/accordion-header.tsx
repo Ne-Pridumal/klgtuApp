@@ -1,6 +1,6 @@
 import { ReactNode, SyntheticEvent, forwardRef, useContext, useEffect } from "react";
 import styled from "styled-components";
-import AccordionContext, { AccordionEventKey } from "./accordion-context";
+import AccordionContext, { AccordionEventKey, isAccordionItemSelected } from "./accordion-context";
 import { IconButton } from "../../molecules";
 import AccordionItemContext from "./accordion-item-context";
 
@@ -34,21 +34,17 @@ const AccordionHeader = forwardRef<HTMLDivElement, TAccordionHeader>(({
     <Wrapper
       ref={ref}
       onClick={accordionOnClick}
-      aria-expanded={
-        Array.isArray(activeEventKey)
-          ? activeEventKey.includes(eventKey)
-          : eventKey === activeEventKey
-      }
       {...props}
     >
       <ContentWrapper>
         {children}
       </ContentWrapper>
       {showButton && (
-        <IconButton
-          icon="chevronUp"
+        <AccordionButton
+          icon="chevronDown"
           form="square"
           variant="tonal"
+          isCollapsed={isAccordionItemSelected(activeEventKey, eventKey)}
           onClick={() => accordionOnClick}
         />
       )}
@@ -62,8 +58,17 @@ const Wrapper = styled.div`
   align-items: center;
   cursor: pointer;
 `
+
 const ContentWrapper = styled.div`
 
+`
+type TButton = {
+  isCollapsed: boolean
+}
+const AccordionButton = styled(IconButton) <TButton>`
+  & svg {
+    transform: ${({ isCollapsed }) => isCollapsed && `rotate(360deg)`};
+  }
 `
 
 type EventHandler = React.EventHandler<SyntheticEvent>
