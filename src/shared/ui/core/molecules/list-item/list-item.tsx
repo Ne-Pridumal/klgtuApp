@@ -1,5 +1,6 @@
 import styled, { useTheme } from "styled-components";
 import { IconCheck, Typography } from "../../atoms";
+import { forwardRef } from "react";
 
 export type TListItem = {
   onClick?: () => void,
@@ -8,10 +9,16 @@ export type TListItem = {
   type?: 'default' | 'small'
 }
 
-export const ListItem = ({ text, onClick, isPicked = false, type = 'default' }: TListItem) => {
+export const ListItem = forwardRef<HTMLDivElement, TListItem>(({
+  text,
+  onClick,
+  isPicked = false,
+  type = 'default',
+  ...props
+}, ref) => {
   const { palette } = useTheme()
   return (
-    <Wrapper onClick={onClick} type={type}>
+    <Wrapper onClick={onClick} type={type} ref={ref} {...props}>
       <Typography
         variant={type === 'default' ? 'callout' : 'footnote'}
         type="light"
@@ -26,7 +33,7 @@ export const ListItem = ({ text, onClick, isPicked = false, type = 'default' }: 
       }
     </Wrapper>
   );
-};
+});
 
 type TWrapper = Required<Pick<TListItem, 'type'>>
 

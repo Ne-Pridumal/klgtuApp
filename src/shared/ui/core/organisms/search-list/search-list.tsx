@@ -115,8 +115,21 @@ const ContentWrapper = styled.div`
   overflow: auto;
   width: 100%;
   height: 100%;
+  scrollbar-width: thin;
   scrollbar-color: ${({ theme: { palette } }) => `${palette.content.cnt_150} ${palette.background.bg_000}`};
-  scrollbar-width: 10px;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: ${({ theme: { palette } }) => palette.content.cnt_150};
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    border-radius: 2px;
+  }
 `
 const AlarmWrapper = styled.div`
   max-width: 280px;

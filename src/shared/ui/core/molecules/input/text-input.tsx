@@ -1,24 +1,27 @@
-import styled, { useTheme } from "styled-components";
-import { ChangeEvent, useRef, useState } from "react";
-import { IconSearch } from "../../atoms";
+import styled from "styled-components";
+import { ChangeEvent, MouseEvent, ReactNode, forwardRef, useRef, useState } from "react";
+import { IconsList, TIconsList } from "../../atoms";
 
 export type TTextInput = {
   value?: string,
   placeholder?: string,
-  showIcon?: boolean,
+  icon?: TIconsList,
   onChange: (e: string) => void,
-  disabled?: boolean
+  disabled?: boolean,
+  button?: ReactNode,
 }
 
-export const TextInput = ({
+export const TextInput = forwardRef<HTMLDivElement, TTextInput>(({
   value = '',
   placeholder,
-  showIcon = false,
   onChange,
   disabled = false,
-}: TTextInput) => {
-  const { palette } = useTheme()
+  icon,
+  button,
+  ...props
+}, ref) => {
   const inputRef = useRef<HTMLInputElement>(null)
+  const buttonRef = useRef<HTMLDivElement>(null)
   const [focus, setFocus] = useState(false)
   const event = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault
@@ -27,19 +30,14 @@ export const TextInput = ({
     onChange(e.target.value)
   }
   const onFocus = () => {
-    if (disabled) {
-      return
-    }
     setFocus(true)
   }
   const onBlur = () => {
-    if (disabled) {
-      return
-    }
     setFocus(false)
   }
-  const wrapperClick = () => {
-    if (disabled) {
+  const wrapperClick = (e: MouseEvent<HTMLDivElement>) => {
+    //possibly there can be some problems
+    if (disabled || buttonRef.current?.contains(e.target as Node)) {
       return
     }
     inputRef.current?.focus()
@@ -49,16 +47,11 @@ export const TextInput = ({
       onClick={wrapperClick}
       isActive={focus}
       isDisable={disabled}
+      isText={!!inputRef.current?.value}
+      ref={ref}
+      {...props}
     >
-      {showIcon &&
-        <IconSearch
-          size={16}
-          color={disabled ?
-            palette.background.bg_250
-            :
-            value.length > 0 ? palette.content.cnt_000 : palette.content.cnt_100}
-        />
-      }
+      {icon && IconsList[icon]}
       <CustomInput
         placeholder={placeholder}
         value={value}
@@ -69,14 +62,17 @@ export const TextInput = ({
         onBlur={onBlur}
         disabled={disabled}
       />
-    </Wrapper>
+      <ButtonWrapper ref={buttonRef}>
+        {button}
+      </ButtonWrapper>
+    </Wrapper >
   );
-};
-
+});
 
 type TWrapper = {
   isActive: boolean,
-  isDisable: boolean
+  isDisable: boolean,
+  isText: boolean
 }
 
 const Wrapper = styled.div<TWrapper>`
@@ -97,20 +93,43 @@ const Wrapper = styled.div<TWrapper>`
   }};
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0px 0px 0px 2px ${({ theme: { palette }, isActive }) => isActive ? palette.accent.primary_500_op12 : 'none'}
+  box-shadow: 0px 0px 0px 2px ${({ theme: { palette }, isActive }) => isActive ? palette.accent.primary_500_op12 : 'none'};
+  & > svg {
+    height: 20px;
+    width: 20px;
+    min-height: 20px;
+    min-width: 20px;
+  };
+  & > svg path {
+    fill: ${({ theme: { palette }, isActive, isDisable, isText }): string => {
+    let bg = palette.content.cnt_100
+    if (isActive || isText) {
+      bg = palette.content.cnt_000
+    }
+    if (isDisable) {
+      bg = palette.background.bg_250
+    }
+    return bg
+  }};
+  }
 `
 
 const CustomInput = styled.input`
-  width: 100%;
+  width: auto;
   height: auto;
   background: transparent;
   outline: none;
   border: none;
   cursor: pointer;
+  padding: 0;
   caret-color: ${({ theme: { palette } }) => palette.accent.primary_500};
   ${({ theme: { typography } }) => typography.footnote};
   font-size: ${({ theme: { typography } }) => typography.footnote.size};
   &::placeholder {
     color: ${({ theme: { palette } }) => palette.content.cnt_100};
   }
+`
+
+const ButtonWrapper = styled.div`
+  width: auto;
 `

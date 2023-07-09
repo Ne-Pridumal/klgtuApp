@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { IconsList, TIconsList } from "../../atoms";
+import { forwardRef } from "react";
 
 export type TIconButton = {
   onClick?: () => void,
@@ -9,9 +10,10 @@ export type TIconButton = {
   icon: TIconsList,
   width?: number,
   height?: number,
+  padding?: boolean,
 }
 
-export const IconButton = ({
+export const IconButton = forwardRef<HTMLButtonElement, TIconButton>(({
   onClick,
   icon,
   isDisable = false,
@@ -19,7 +21,9 @@ export const IconButton = ({
   form = 'ellipse',
   width = 24,
   height = 24,
-}: TIconButton) => {
+  padding = true,
+  ...props
+}, ref) => {
   return (
     <ButtonWrapper
       onClick={onClick}
@@ -29,19 +33,22 @@ export const IconButton = ({
       disabled={isDisable}
       height={height}
       width={width}
+      padding={padding}
+      ref={ref}
+      {...props}
     >
       {IconsList[icon]}
     </ButtonWrapper>
   );
-};
+});
 
-type TButtonWrapper = Required<Pick<TIconButton, 'variant' | 'isDisable' | 'form' | 'width' | 'height'>>
+type TButtonWrapper = Required<Pick<TIconButton, 'variant' | 'isDisable' | 'form' | 'width' | 'height' | 'padding'>>
 
 const ButtonWrapper = styled.button<TButtonWrapper>`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: ${({ padding }) => !padding ? `0px` : `8px`};
   border-radius: ${({ form }) => form === 'square' ? `8px` : `50%`};
   border: none;
   cursor: pointer;

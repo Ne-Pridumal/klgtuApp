@@ -1,49 +1,14 @@
-import styled, { useTheme } from "styled-components";
-import { IconKLGTUApp, IconSlantedArrow, IconStraightArrow } from "../../atoms/icons";
-import { IconButton } from "../../molecules/icon-button";
-import { Typography } from "../../atoms";
+import styled from "styled-components";
+import { ReactNode } from "react";
 
 export type TFooter = {
-  upAction: () => void,
-  textAction: () => void,
-  logoAction: () => void,
+  children?: ReactNode
 }
 
-export const Footer = ({ upAction, textAction, logoAction }: TFooter) => {
-  const { palette } = useTheme()
+const Footer = ({ children }: TFooter) => {
   return (
     <Wrapper>
-      <LogoWrapper onClick={logoAction}>
-        <IconKLGTUApp
-          height={32}
-          width={141}
-        />
-      </LogoWrapper>
-      <ActivitiesWrapper>
-        <TextWrapper
-          onClick={textAction}
-        >
-          <Typography
-            variant="subheadline"
-            type="medium"
-          >
-            Телеграм-канал с новостями
-          </Typography>
-          <IconSlantedArrow
-            color={palette.accent.primary_500}
-            direction="up"
-            size={20}
-          />
-        </TextWrapper>
-        <IconButton
-          icon={<IconStraightArrow
-            color={palette.content.cnt_const_white}
-            direction="up"
-          />}
-          onClick={upAction}
-          variant="filled"
-        />
-      </ActivitiesWrapper>
+      {children}
     </Wrapper>
   );
 };
@@ -58,18 +23,6 @@ const Wrapper = styled.header`
   background: ${({ theme: { palette } }) => palette.background.bg_000};
   box-shadow: 0px 5px 16px 0px rgba(0,0,0, .1);
 `
-const LogoWrapper = styled.div`
-  display: flex;
-  cursor: pointer;
-`
-const ActivitiesWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 32px;
-`
-const TextWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-`
+
+
+export default Footer
