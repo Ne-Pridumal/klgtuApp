@@ -36,7 +36,6 @@ const Modal = forwardRef<HTMLDivElement, TModal>((
     if (!scrollable) {
       document.body.style.overflow = 'auto'
     }
-    console.log('hide')
     onHide?.()
   }
   const modalContext = useMemo(

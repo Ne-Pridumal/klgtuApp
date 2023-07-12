@@ -11,7 +11,7 @@ export type TTextInput = {
   button?: ReactNode,
 }
 
-export const TextInput = forwardRef<HTMLDivElement, TTextInput>(({
+export const TextInput = forwardRef<HTMLInputElement, TTextInput>(({
   value = '',
   placeholder,
   onChange,

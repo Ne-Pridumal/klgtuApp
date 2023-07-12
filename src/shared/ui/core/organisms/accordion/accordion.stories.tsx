@@ -7,7 +7,7 @@ type TAccordionComponent = {
 
 const AccordionComponent = ({ }: TAccordionComponent) => {
   return (
-    <Accordion>
+    <Accordion defaultActiveKey='1'>
       <Accordion.Item eventKey='1'>
         <Accordion.Header>
           asdfasdfasdf
