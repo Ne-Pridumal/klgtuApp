@@ -1,3 +1,4 @@
+import { NavigationProvider } from '@app/navigation-provider';
 import { AppThemeProvider } from '@app/theme-provider';
 import { createGlobalStyle } from 'styled-components';
 
@@ -12,6 +13,7 @@ export const App = () => {
   return (
     <AppThemeProvider>
       <GlobalStyles />
+      <NavigationProvider />
     </AppThemeProvider>
   );
 };
