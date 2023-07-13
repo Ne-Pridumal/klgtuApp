@@ -1,5 +1,6 @@
 import { NavigationProvider } from '@app/navigation-provider';
 import { AppThemeProvider } from '@app/theme-provider';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
@@ -9,11 +10,16 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
   }
 `
+
+const queryClient = new QueryClient()
+
 export const App = () => {
   return (
-    <AppThemeProvider>
-      <GlobalStyles />
-      <NavigationProvider />
-    </AppThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppThemeProvider>
+        <GlobalStyles />
+        <NavigationProvider />
+      </AppThemeProvider>
+    </QueryClientProvider>
   );
 };

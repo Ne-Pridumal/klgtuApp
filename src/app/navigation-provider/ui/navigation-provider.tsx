@@ -1,5 +1,6 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import { Layout } from "./layout";
+import { SelectPage } from "@pages/select-page";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -7,7 +8,7 @@ const router = createBrowserRouter(
       <Route
         index
         path="select"
-        element={<div>select</div>}
+        element={<SelectPage />}
       />
     </Route>
   )

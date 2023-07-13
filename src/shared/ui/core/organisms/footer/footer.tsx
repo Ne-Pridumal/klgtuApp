@@ -12,7 +12,7 @@ const Footer = ({ children }: TFooter) => {
     </Wrapper>
   );
 };
-const Wrapper = styled.header`
+const Wrapper = styled.footer`
   width: 100%;
   height: 64px;
   padding: 0px 32px;

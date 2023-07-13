@@ -13,42 +13,53 @@ type THeaderWidget = {
 
 export const HeaderWidget = ({ isLogo, onSunClick, onLogoClick, onDownloadClick, onBackwardClick }: THeaderWidget) => {
   return (
-    <Header>
-      <CustomBrand>
-        {isLogo ?
-          <IconWrapper onClick={onLogoClick}>
-            <IconKLGTUApp
-              width={141}
-              height={32}
+    <Wrapper>
+      <Header>
+        <CustomBrand>
+          {isLogo ?
+            <IconWrapper onClick={onLogoClick}>
+              <IconKLGTUApp
+                width={141}
+                height={32}
+              />
+            </IconWrapper>
+            :
+            <Button
+              text='Выбор расписания'
+              variant='text'
+              icon='chevronLeft'
+              size='large'
+              onClick={onBackwardClick}
             />
-          </IconWrapper>
-          :
-          <Button
-            text='Выбор расписания'
-            variant='text'
-            icon='chevronLeft'
-            size='large'
-            onClick={onBackwardClick}
-          />
-        }
-      </CustomBrand>
-      <Header.Activities>
-        <ButtonsWrapper>
-          <IconButton
-            icon='sun'
-            variant='transparent'
-            onClick={onSunClick}
-          />
-          <Button
-            text='скачать приложение'
-            variant='outlined'
-            onClick={onDownloadClick}
-          />
-        </ButtonsWrapper>
-      </Header.Activities>
-    </Header>
+          }
+        </CustomBrand>
+        <Header.Activities>
+          <ButtonsWrapper>
+            <IconButton
+              icon='sun'
+              variant='transparent'
+              onClick={onSunClick}
+            />
+            <Button
+              text='скачать приложение'
+              variant='outlined'
+              onClick={onDownloadClick}
+            />
+          </ButtonsWrapper>
+        </Header.Activities>
+      </Header>
+    </Wrapper>
   )
 };
+
+const Wrapper = styled.div`
+  padding: 24px 0;
+  display: flex;
+  justify-content: center;
+  & > header {
+    max-width: 1140px;
+  }
+`
 
 const IconWrapper = styled.div`
   cursor: pointer;

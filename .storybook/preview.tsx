@@ -33,6 +33,6 @@ export const decorators = [
     },
     defaultTheme: 'light',
     Provider: ThemeProvider,
-    GlobalStyles, // Adds your GlobalStyle component to all stories
+    GlobalStyles,// Adds your GlobalStyle component to all stories
   }),
 ];

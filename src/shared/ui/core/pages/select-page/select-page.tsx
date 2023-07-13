@@ -3,12 +3,15 @@ import { Typography } from "../../atoms";
 import { SelectPageTemplate } from "../../templates";
 import { Button, TextInput } from "../../molecules";
 import { SearchList } from "../../organisms";
+import { ComponentProps } from "react";
 
 export type TSelectPage = TSearchComponent & {
-
+  searchListProps: Omit<ComponentProps<typeof SearchList>, 'width' | 'height'> & {
+    show: boolean,
+  }
 }
 
-export const SelectPage = ({ buttonProps, inputProps }: TSelectPage) => {
+export const SelectPage = ({ buttonProps, inputProps, searchListProps }: TSelectPage) => {
   return (
     <SelectPageTemplate
       showVariants={true}
@@ -29,20 +32,16 @@ export const SelectPage = ({ buttonProps, inputProps }: TSelectPage) => {
         />
       }
       variantsListComponent={
-        <SearchList
-          items={[
-            'asdfasd',
-            'asdfasdf',
-            'asdfasdf',
-            'asdfasdf',
-            'asdfasdfas',
-            'asdfasdf'
-          ]}
-          isLoading={false}
-          onClick={() => { }}
+        searchListProps.show ? <SearchList
+          isBackward={searchListProps.isBackward}
+          onBackward={searchListProps.onBackward}
+          items={searchListProps.items}
+          isLoading={searchListProps.isLoading}
           width={480}
           height={255}
         />
+          :
+          <></>
       }
     />
   );
@@ -52,21 +51,15 @@ type TSearchComponent = {
   buttonProps: TButtonProps,
   inputProps: TInputProps,
 }
-type TButtonProps = {
-  onClick: () => void,
-  isDisable: boolean,
-}
-type TInputProps = {
-  onChange: () => void,
-  value: string,
-  placeholder: string,
-  width?: number,
-}
+type TButtonProps = Required<Pick<ComponentProps<typeof Button>, 'onClick' | 'isDisable'>>
+type TInputProps = Required<Pick<ComponentProps<typeof TextInput>, 'placeholder' | 'value' | 'onChange' | 'disabled'>>
+
 const SearchComponent = ({ buttonProps, inputProps }: TSearchComponent) => {
   return (
     <Wrapper>
       <TextInput
         icon="search"
+        width={480}
         {...inputProps}
       />
       <Button
