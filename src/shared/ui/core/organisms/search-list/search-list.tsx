@@ -1,16 +1,32 @@
 import styled, { useTheme } from "styled-components";
 import { ListItem } from "../../molecules/list-item";
-import { InfinityCircleProgress, Typography } from "../../atoms";
+import { IconChevron, InfinityCircleProgress, Typography } from "../../atoms";
 
 export type TSearchList = {
-  items: string[],
+  isBackward: boolean,
+  onBackward?: () => void,
+  items: TSearchItem[],
   isLoading: boolean,
-  onClick: () => void,
   width?: number,
   height?: number,
 }
 
-export const SearchList = ({ onClick, items, width = 480, height = 256, isLoading }: TSearchList) => {
+export type TSearchItem = {
+  id: number,
+  value: string,
+  isIcon: boolean,
+  onClick: () => void,
+  isPicked: boolean,
+}
+
+export const SearchList = ({
+  items,
+  width = 480,
+  height = 256,
+  isLoading,
+  isBackward,
+  onBackward,
+}: TSearchList) => {
   const { palette } = useTheme()
 
   if (isLoading)
@@ -50,38 +66,47 @@ export const SearchList = ({ onClick, items, width = 480, height = 256, isLoadin
   return (
     <Wrapper width={width} height={height}>
       <TitleWrapper>
-        <Typography
-          type="light"
-          variant="caption1"
-          color={palette.content.cnt_050}
-        >
-          Результаты поиска
-        </Typography>
-      </TitleWrapper>
-      <ContentWrapper>
-        {items.length > 0 && items.map((item) => (
-          <ListItem
-            type="default"
-            onClick={onClick}
-            text={item}
-          />
-        ))}
-        {items.length === 0 && (
-          <AlarmWrapper>
-            <Typography
-              type="bold"
-              variant="title2"
-            >
-              Ничего не найдено
-            </Typography>
+        {!isBackward && (
+          <Typography
+            onClick={onBackward}
+            type="light"
+            variant="caption1"
+            color={palette.content.cnt_050}
+          >
+            РЕЗУЛЬТАТЫ ПОИСКА
+          </Typography>
+        )}
+        {isBackward && (
+          <OnBackwardWrapper
+            onClick={onBackward}
+          >
+            <IconChevron
+              direction="left"
+              color={palette.accent.primary_500}
+              size={12}
+            />
             <Typography
               type="light"
-              variant="subheadline"
+              variant="caption1"
+              color={palette.accent.primary_500}
             >
-              Проверьте, нет ли ошибок в написанном запросе.
+              ВЕРНУТЬСЯ НАЗАД
             </Typography>
-          </AlarmWrapper>
+          </OnBackwardWrapper>
         )}
+      </TitleWrapper>
+      <ContentWrapper>
+        {items.map((item) => (
+          <ListItem
+            type="default"
+            onClick={item.onClick}
+            text={item.value}
+            icon='chevronRight'
+            showIcon={item.isIcon}
+            isPicked={item.isPicked}
+            key={item.id}
+          />
+        ))}
       </ContentWrapper>
     </Wrapper>
   );
@@ -143,4 +168,10 @@ const AlarmWrapper = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+`
+const OnBackwardWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
 `

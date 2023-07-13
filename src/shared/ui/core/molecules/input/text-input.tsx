@@ -9,15 +9,17 @@ export type TTextInput = {
   onChange: (e: string) => void,
   disabled?: boolean,
   button?: ReactNode,
+  width?: number
 }
 
-export const TextInput = forwardRef<HTMLDivElement, TTextInput>(({
+export const TextInput = forwardRef<HTMLInputElement, TTextInput>(({
   value = '',
   placeholder,
   onChange,
   disabled = false,
   icon,
   button,
+  width,
   ...props
 }, ref) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -48,6 +50,7 @@ export const TextInput = forwardRef<HTMLDivElement, TTextInput>(({
       isActive={focus}
       isDisable={disabled}
       isText={!!inputRef.current?.value}
+      width={width}
       ref={ref}
       {...props}
     >
@@ -62,9 +65,11 @@ export const TextInput = forwardRef<HTMLDivElement, TTextInput>(({
         onBlur={onBlur}
         disabled={disabled}
       />
-      <ButtonWrapper ref={buttonRef}>
-        {button}
-      </ButtonWrapper>
+      {button && (
+        <ButtonWrapper ref={buttonRef}>
+          {button}
+        </ButtonWrapper>
+      )}
     </Wrapper >
   );
 });
@@ -72,10 +77,12 @@ export const TextInput = forwardRef<HTMLDivElement, TTextInput>(({
 type TWrapper = {
   isActive: boolean,
   isDisable: boolean,
-  isText: boolean
+  isText: boolean,
+  width?: number,
 }
 
 const Wrapper = styled.div<TWrapper>`
+  width: ${({ width }) => width}px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -115,7 +122,7 @@ const Wrapper = styled.div<TWrapper>`
 `
 
 const CustomInput = styled.input`
-  width: auto;
+  width: 100%;
   height: auto;
   background: transparent;
   outline: none;

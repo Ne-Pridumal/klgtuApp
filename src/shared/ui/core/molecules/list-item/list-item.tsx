@@ -1,10 +1,12 @@
 import styled, { useTheme } from "styled-components";
-import { IconCheck, Typography } from "../../atoms";
+import { IconCheck, IconsList, TIconsList, Typography } from "../../atoms";
 import { forwardRef } from "react";
 
 export type TListItem = {
   onClick?: () => void,
   text: string,
+  icon?: TIconsList,
+  showIcon?: boolean,
   isPicked?: boolean,
   type?: 'default' | 'small'
 }
@@ -14,6 +16,8 @@ export const ListItem = forwardRef<HTMLDivElement, TListItem>(({
   onClick,
   isPicked = false,
   type = 'default',
+  showIcon = false,
+  icon,
   ...props
 }, ref) => {
   const { palette } = useTheme()
@@ -30,6 +34,11 @@ export const ListItem = forwardRef<HTMLDivElement, TListItem>(({
           color={palette.accent.primary_550}
           size={type === 'default' ? 22 : 16}
         />
+      }
+      {!isPicked && showIcon && icon &&
+        <IconWrapper>
+          {IconsList[icon]}
+        </IconWrapper>
       }
     </Wrapper>
   );
@@ -49,4 +58,13 @@ const Wrapper = styled.div<TWrapper>`
     border-color: ${({ theme: { palette } }) => palette.accent.primary_500_op12};
     background: ${({ theme: { palette } }) => palette.accent.primary_500_op12};
   };
+`
+const IconWrapper = styled.div`
+  & svg {
+    width: 22px;
+    height: 22px;
+  }
+  & svg path {
+    fill: ${({ theme: { palette } }) => palette.content.cnt_100};
+  }
 `

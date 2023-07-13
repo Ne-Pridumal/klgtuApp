@@ -18,7 +18,7 @@ const Accordion = forwardRef<HTMLDivElement, TAccordion>(({
   children,
   ...props
 }, ref) => {
-  const [key, setKey] = useState(activeKey)
+  const [key, setKey] = useState(defaultActiveKey ? defaultActiveKey : activeKey)
   const selectHandler = (passedKey: AccordionEventKey, e: SyntheticEvent<unknown>) => {
     setKey(passedKey)
     onSelect?.(passedKey, e)
