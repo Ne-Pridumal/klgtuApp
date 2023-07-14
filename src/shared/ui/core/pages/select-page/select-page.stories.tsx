@@ -41,8 +41,11 @@ const SelectPageStory = ({ }) => {
     isPicked: item.content.id === pickedId
   }))
   const onBackward = () => {
-    setSublist([])
     setIsBackward(false)
+    setTimeout(() => {
+      setSublist([])
+    }, 200)
+
   }
   return (
     <SelectPage
@@ -56,10 +59,11 @@ const SelectPageStory = ({ }) => {
         placeholder: 'Группа, преподаватель, аудитория',
       }}
       searchListProps={{
+        subItems: sublist,
         show: showSearch,
         onBackward: onBackward,
         isBackward: isBackward,
-        items: sublist.length > 0 ? sublist : searchList.filter(i => i.value.includes(inputValue)),
+        items: searchList.filter(i => i.value.includes(inputValue)),
         isLoading: false,
       }}
       buttonProps={{

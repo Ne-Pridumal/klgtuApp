@@ -1,14 +1,14 @@
-import styled from "styled-components";
-import { Typography } from "../../atoms";
+import styled, { useTheme } from "styled-components";
+import { IconChevron, Typography } from "../../atoms";
 import { SelectPageTemplate } from "../../templates";
 import { Button, TextInput } from "../../molecules";
-import { SearchList } from "../../organisms";
+import { SearchList, TSearchItem } from "../../organisms";
 import { ComponentProps } from "react";
 
 export type TSelectPage = TSearchComponent & {
-  searchListProps: Omit<ComponentProps<typeof SearchList>, 'width' | 'height'> & {
-    show: boolean,
-  }
+  searchListProps: TSearchListComponent & {
+    show: boolean
+  },
 }
 
 export const SelectPage = ({ buttonProps, inputProps, searchListProps }: TSelectPage) => {
@@ -32,16 +32,12 @@ export const SelectPage = ({ buttonProps, inputProps, searchListProps }: TSelect
         />
       }
       variantsListComponent={
-        searchListProps.show ? <SearchList
-          isBackward={searchListProps.isBackward}
-          onBackward={searchListProps.onBackward}
-          items={searchListProps.items}
-          isLoading={searchListProps.isLoading}
-          width={480}
-          height={255}
-        />
+        searchListProps.show ?
+          <SearchListComponent
+            {...searchListProps}
+          />
           :
-          <></>
+          null
       }
     />
   );
@@ -70,7 +66,106 @@ const SearchComponent = ({ buttonProps, inputProps }: TSearchComponent) => {
   )
 }
 
+type TSearchListComponent = Omit<ComponentProps<typeof SearchList>, 'width' | 'height' | 'title'> & {
+  subItems: TSearchItem[],
+  isBackward: boolean,
+  onBackward: () => void,
+}
+
+const SearchListComponent = ({ items, subItems, isLoading, isBackward, onBackward }: TSearchListComponent) => {
+  const { palette } = useTheme()
+  return (
+    <SearchListWrapper>
+      <MainListWrapper>
+        <SearchList
+          title={
+            <Typography
+              type="light"
+              variant="caption1"
+              color={palette.content.cnt_050}
+            >
+              РЕЗУЛЬТАТЫ ПОИСКА
+            </Typography>
+          }
+          items={items}
+          isLoading={isLoading}
+        />
+      </MainListWrapper>
+      <SubListWrapper
+        showSubItems={isBackward}
+      >
+        <SearchList
+          title={
+            <OnBackwardWrapper
+              onClick={onBackward}
+            >
+              <IconChevron
+                direction="left"
+                color={palette.accent.primary_500}
+                size={12}
+              />
+              <Typography
+                type="light"
+                variant="caption1"
+                color={palette.accent.primary_500}
+              >
+                ВЕРНУТЬСЯ НАЗАД
+              </Typography>
+            </OnBackwardWrapper>
+          }
+          items={subItems}
+          isLoading={isLoading}
+        />
+      </SubListWrapper>
+    </SearchListWrapper>
+  )
+}
+
 const Wrapper = styled.div`
   display: flex;
   gap: 12px;
+`
+
+type TSubListWrapper = {
+  showSubItems: boolean
+}
+
+const MainListWrapper = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+`
+
+const SubListWrapper = styled.div<TSubListWrapper>`
+  position: absolute;
+  left: ${({ showSubItems }) => showSubItems ? 0 : '100%'};
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  transition: left .2s ease-out;
+`
+
+const SearchListWrapper = styled.div`
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  gap: 10px;
+  width: 480px;
+  height: 255px;
+  border-radius: 16px;
+  box-shadow: 0px 5px 16px 0px rgba(0,0,0,.1);
+  & div {
+    box-shadow: none;
+  }
+`
+
+const OnBackwardWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
 `
