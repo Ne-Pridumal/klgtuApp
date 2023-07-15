@@ -24,7 +24,6 @@ const SelectPageStory = ({ }) => {
           isPicked: item.id === pickedId,
           onClick() {
             setInputValue(item.name)
-            setSublist([])
             setPickedId(item.id)
             setIsBackward(false)
             setShowSearch(false)
@@ -33,7 +32,6 @@ const SelectPageStory = ({ }) => {
         })))
       } else {
         setInputValue(item.name)
-        setSublist([])
         setPickedId(item.content.id)
         setShowSearch(false)
       }
@@ -42,10 +40,6 @@ const SelectPageStory = ({ }) => {
   }))
   const onBackward = () => {
     setIsBackward(false)
-    setTimeout(() => {
-      setSublist([])
-    }, 200)
-
   }
   return (
     <SelectPage
@@ -63,7 +57,7 @@ const SelectPageStory = ({ }) => {
         show: showSearch,
         onBackward: onBackward,
         isBackward: isBackward,
-        items: searchList.filter(i => i.value.includes(inputValue)),
+        items: searchList.filter(i => i.value.includes(inputValue.toUpperCase())),
         isLoading: false,
       }}
       buttonProps={{

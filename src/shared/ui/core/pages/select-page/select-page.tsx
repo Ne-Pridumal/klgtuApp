@@ -76,7 +76,9 @@ const SearchListComponent = ({ items, subItems, isLoading, isBackward, onBackwar
   const { palette } = useTheme()
   return (
     <SearchListWrapper>
-      <MainListWrapper>
+      <MainListWrapper
+        showSubItems={isBackward}
+      >
         <SearchList
           title={
             <Typography
@@ -126,27 +128,29 @@ const Wrapper = styled.div`
   gap: 12px;
 `
 
-type TSubListWrapper = {
+type TListWrapper = {
   showSubItems: boolean
 }
 
-const MainListWrapper = styled.div`
+const MainListWrapper = styled.div<TListWrapper>`
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   z-index: 0;
+  opacity: ${({ showSubItems }) => showSubItems ? 0 : 1};
+  transition: opacity .2s ease-out;
 `
 
-const SubListWrapper = styled.div<TSubListWrapper>`
+const SubListWrapper = styled.div<TListWrapper>`
   position: absolute;
   left: ${({ showSubItems }) => showSubItems ? 0 : '100%'};
   top: 0;
   width: 100%;
   height: 100%;
   z-index: 10;
-  transition: left .2s ease-out;
+  transition: left .3s ease-out;
 `
 
 const SearchListWrapper = styled.div`

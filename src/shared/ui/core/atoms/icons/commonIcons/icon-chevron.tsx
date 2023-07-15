@@ -1,4 +1,4 @@
-import { TDirectedIconProps } from "./types";
+import { TDirectedIconProps } from "../types";
 
 
 export const IconChevron = ({ color, size, direction = 'up' }: TDirectedIconProps) => {

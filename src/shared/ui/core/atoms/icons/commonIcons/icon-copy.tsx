@@ -1,4 +1,4 @@
-import { TBaseIconProps } from "./types";
+import { TBaseIconProps } from "../types";
 
 export const IconCopy = ({ size, color }: TBaseIconProps) => {
   return (
