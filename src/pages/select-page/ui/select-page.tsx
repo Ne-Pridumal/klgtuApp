@@ -14,7 +14,7 @@ export const SelectPage = ({ }: TSelectPage) => {
   const [inputValue, setInputValue] = useState('')
   const [sublist, setSublist] = useState<TSearchItem[]>([])
   const [isBackward, setIsBackward] = useState(false)
-  const [pickedId, setPickedId] = useState(-12)
+  const [pickedId, setPickedId] = useState(-1)
   const searchList: TSearchItem[] = data?.map(item => ({
     id: item.content.id,
     value: item.name,
@@ -27,8 +27,7 @@ export const SelectPage = ({ }: TSelectPage) => {
           isIcon: false,
           isPicked: item.id === pickedId,
           onClick() {
-            setInputValue(item.name)
-            setSublist([])
+            setInputValue(item.name.toUpperCase())
             setPickedId(item.id)
             setIsBackward(false)
             setShowSearch(false)
@@ -36,8 +35,7 @@ export const SelectPage = ({ }: TSelectPage) => {
           value: item.name,
         })))
       } else {
-        setInputValue(item.name)
-        setSublist([])
+        setInputValue(item.name.toUpperCase())
         setPickedId(item.content.id)
         setShowSearch(false)
       }
@@ -45,47 +43,48 @@ export const SelectPage = ({ }: TSelectPage) => {
     isPicked: item.content.id === pickedId
   })) ?? []
   const onBackward = () => {
-    setSublist([])
     setIsBackward(false)
   }
   useEffect(() => {
     setFooterVisibility?.(false)
   }, [])
+  //TODO: сделать нормальное появление поисковика, постараться убрать проверку в setInputValue
   useEffect(() => {
-    const typeDelay = setTimeout(() => {
-      if (inputValue !== '') {
-        getTimetable(inputValue)
-      }
-    }, 500)
-    return () => clearTimeout(typeDelay)
+    if (inputValue.length < 2) {
+      setShowSearch(false)
+      return
+    }
+    if (pickedId < 0) {
+      setShowSearch(true)
+      getTimetable(inputValue)
+    }
   }, [inputValue])
   return (
     <SelectPageConstructor
       inputProps={{
         disabled: false,
         value: inputValue,
-        onChange: (e) => {
-          setInputValue(e)
-          if (e !== '') {
-            setShowSearch(true)
-          } else {
-            setShowSearch(false)
-          }
-        },
+        onChange: (e) =>
+          setInputValue(prevVal => {
+            if (prevVal.length > e.length) {
+              setPickedId(-1)
+            }
+            return e
+          }),
         placeholder: 'Группа, преподаватель, аудитория',
       }}
       searchListProps={{
+        subItems: sublist,
         show: showSearch,
         onBackward: onBackward,
         isBackward: isBackward,
-        items: sublist.length > 0 ? sublist : searchList.filter(i => i.value.includes(inputValue)),
-        isLoading,
+        items: searchList,
+        isLoading: isLoading,
       }}
       buttonProps={{
         onClick() {
-
         },
-        isDisable: pickedId > 0,
+        isDisable: pickedId < 0,
       }}
     />
   );

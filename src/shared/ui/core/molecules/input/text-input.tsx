@@ -12,7 +12,7 @@ export type TTextInput = {
   width?: number
 }
 
-export const TextInput = forwardRef<HTMLInputElement, TTextInput>(({
+export const TextInput = forwardRef<HTMLDivElement, TTextInput>(({
   value = '',
   placeholder,
   onChange,
