@@ -15,7 +15,6 @@ export const WeekPicker = ({
   onPrev,
   title,
   fieldValue,
-  isLoading,
 }: TWeekPicker) => {
   return (
     <Wrapper>

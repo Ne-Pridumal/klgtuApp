@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 import { IconConsult, IconCredit, IconDayOff, IconDiffCredit, IconDistance, IconExam, IconHoliday, IconLaboratory, IconLecture, IconOther, IconToNPair, IconUnknow, IconWindow, IconWorkshop, IconWorkshopPe } from ".";
 
-export const TimetableIconsList = {
+export const TimetableIconsList: Record<string, ReactNode> = {
   exam: <IconExam />,
   other: <IconOther />,
   credit: <IconCredit />,

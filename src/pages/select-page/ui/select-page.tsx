@@ -1,4 +1,5 @@
-import LayoutContext from '@app/navigation-provider/ui/layout-context';
+import { LayoutContext } from '@app/navigation-provider';
+import { NotificationsContext } from '@app/notification-provider';
 import { useGetTimetable } from '@features/timetable';
 import { TSearchItem } from '@shared/ui/core/organisms';
 import { SelectPage as SelectPageConstructor } from '@shared/ui/core/pages'
@@ -9,7 +10,8 @@ export type TSelectPage = {
 
 export const SelectPage = ({ }: TSelectPage) => {
   const { setFooterVisibility } = useContext(LayoutContext)
-  const { mutate: getTimetable, data, isLoading, isError } = useGetTimetable()
+  const { addNotification } = useContext(NotificationsContext)
+  const { mutate: getTimetable, data, isLoading, isError, error: error } = useGetTimetable()
   const [showSearch, setShowSearch] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [sublist, setSublist] = useState<TSearchItem[]>([])
@@ -59,6 +61,15 @@ export const SelectPage = ({ }: TSelectPage) => {
       getTimetable(inputValue)
     }
   }, [inputValue])
+  useEffect(() => {
+    if (isError) {
+      addNotification({
+        id: Date.now().toLocaleString(),
+        text: "Ошибка",
+        autoCloseTime: 5,
+      })
+    }
+  }, [isError, error])
   return (
     <SelectPageConstructor
       inputProps={{
@@ -75,7 +86,7 @@ export const SelectPage = ({ }: TSelectPage) => {
       }}
       searchListProps={{
         subItems: sublist,
-        show: showSearch,
+        show: !isError && showSearch,
         onBackward: onBackward,
         isBackward: isBackward,
         items: searchList,
@@ -84,7 +95,7 @@ export const SelectPage = ({ }: TSelectPage) => {
       buttonProps={{
         onClick() {
         },
-        isDisable: pickedId < 0,
+        isDisable: pickedId <= 0,
       }}
     />
   );

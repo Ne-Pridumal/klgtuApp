@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 import { IconCalendar, IconCheck, IconChevron, IconCopy, IconExpand, IconEye, IconGlobe, IconHidden, IconHome, IconHomeAlt, IconInfoCircle, IconLink, IconMoon, IconPlus, IconSearch, IconSlantedArrow, IconStarAlt, IconStraightArrow, IconSun, IconType, IconXClose } from ".";
 
-export const IconsList = {
+export const IconsList: Record<string, ReactNode> = {
   plus: <IconPlus />,
   sun: <IconSun />,
   moon: <IconMoon />,

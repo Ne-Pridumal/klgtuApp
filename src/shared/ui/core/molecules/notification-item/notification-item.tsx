@@ -2,13 +2,13 @@ import styled from "styled-components";
 import { IconInfoCircle, Typography } from "../../atoms";
 import { IconButton } from "../icon-button";
 import { keyframes } from "styled-components";
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 
 export type TNotificationItem = {
   isPicked?: boolean,
   autoCloseTime?: number,
   text: string,
-  onClose: () => void
+  onClose: () => void,
 }
 
 export const NotificationItem = forwardRef<HTMLDivElement, TNotificationItem>(({
@@ -18,6 +18,12 @@ export const NotificationItem = forwardRef<HTMLDivElement, TNotificationItem>(({
   autoCloseTime = 10,
   ...props
 }, ref) => {
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      onClose()
+    }, autoCloseTime * 1000)
+    return () => clearTimeout(timeout)
+  }, [])
   return (
     <Wrapper ref={ref} {...props}>
       {isPicked &&
@@ -25,7 +31,7 @@ export const NotificationItem = forwardRef<HTMLDivElement, TNotificationItem>(({
       }
       <IconInfoCircle
       />
-      <Typography>
+      <Typography variant="callout" type="bold">
         {text}
       </Typography>
       <XCloseWrapper>

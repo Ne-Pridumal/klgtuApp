@@ -1,4 +1,5 @@
 import { NavigationProvider } from '@app/navigation-provider';
+import { NotificationsProvider } from '@app/notification-provider';
 import { AppThemeProvider } from '@app/theme-provider';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createGlobalStyle } from 'styled-components';
@@ -18,7 +19,9 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <AppThemeProvider>
         <GlobalStyles />
-        <NavigationProvider />
+        <NotificationsProvider>
+          <NavigationProvider />
+        </NotificationsProvider>
       </AppThemeProvider>
     </QueryClientProvider>
   );

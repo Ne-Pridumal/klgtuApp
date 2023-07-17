@@ -16,4 +16,4 @@ const fetcher = async (search: string): Promise<TTimetable[]> => {
   return elements
 }
 
-export const useGetTimetable = () => useMutation((s: string) => fetcher(s))
+export const useGetTimetable = () => useMutation((s: string) => fetcher(s), {})
